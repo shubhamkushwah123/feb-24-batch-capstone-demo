@@ -1,0 +1,22 @@
+---
+- hosts: prod-server
+  become: true
+  tasks:
+  - name: update cache
+    apt:
+      update_cache: yes
+
+  - name: install docker runtime
+    apt: 
+      pkg: docker.io
+      state: present
+
+  - name: Start docker service
+    service:
+      name: docker
+      state: started
+      enabled: true
+
+  - name: Deploy insure-me app
+    command: docker run -itd -p 8081:8081 shubhamkushwah123/insure-me:1.0
+
